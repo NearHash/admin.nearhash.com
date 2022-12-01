@@ -8,6 +8,7 @@ use App\Http\Requests\API\V1\Users\CreateOtpRequest;
 use App\Http\Requests\API\V1\Users\CreateRegisterRequest;
 use App\Http\Resources\API\V1\Users\UserResource;
 use App\Models\API\Otp;
+use App\Models\API\Profile;
 use App\Models\API\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -45,10 +46,19 @@ class AuthController extends Controller
 
         $token = $user->createToken('AccessToken');
 
+        $photo = NULL;
+        if($request->image) {
+            $photo = $this->uploadNow($request->image, 'users/');
+        }
 
+        $profile = new Profile();
+        $profile->image = $photo;
+        $profile->user_id = $user->id;
+        $profile->save();
 
         return $this->success([
-            'user' => $user,
+            'user' => $user->images()->first(),
+//            'profile_image' => $photo,
             "access_token" => $token->plainTextToken,
         ], 'Your account has been registered.');
     }
@@ -143,15 +153,20 @@ class AuthController extends Controller
         } else {
             $phone_no = $phone;
             $generateOtp = $this->generateOTP($phone_no);
-            if ($generateOtp && strlen($generateOtp) == 6) {
-                if ($this->sendSMS($phone_no, $generateOtp, 'is your OTP number .')) {
-                    return $this->success([
-                        'otp' => $generateOtp,
-                        'phone' => $phone_no,
-                    ], "OTP successfully sent!", 200);
+            $phoneOtp = Otp::where('phone', $phone_no)->first();
+            if(!$phoneOtp) {
+                if ($generateOtp && strlen($generateOtp) == 6) {
+                    if ($this->sendSMS($phone_no, $generateOtp, 'is your OTP number .')) {
+                        return $this->success([
+                            'otp' => $generateOtp,
+                            'phone' => $phone_no,
+                        ], "OTP successfully sent!", 200);
+                    }
+                } else {
+                    return $this->error(null, "Server error", 500);
                 }
-            } else {
-                return $this->error(null, "Server error", 500);
+            }else {
+                return $this->error(null, "Already sent opt code with that phone number", 422);
             }
         }
     }
