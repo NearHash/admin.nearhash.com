@@ -123,7 +123,7 @@ class AuthController extends Controller
                 'json' => [
                     'message' => $otp . ' ' . $message,
                     'to' => $phone,
-                    'sender' => "Green Earner ",
+                    'sender' => "Near Hash ",
                 ]
             ]);
             $result = json_decode($response->getBody()->getContents(), true);
