@@ -123,7 +123,7 @@ class AuthController extends Controller
                 'json' => [
                     'message' => $otp . ' ' . $message,
                     'to' => $phone,
-                    'sender' => "Green Earner ",
+                    'sender' => "Near Hash ",
                 ]
             ]);
             $result = json_decode($response->getBody()->getContents(), true);
@@ -153,9 +153,9 @@ class AuthController extends Controller
         } else {
             $phone_no = $phone;
             $generateOtp = $this->generateOTP($phone_no);
-            $phoneOtp = Otp::where('phone', $phone_no)->first();
-            if(!$phoneOtp) {
-                if ($generateOtp && strlen($generateOtp) == 6) {
+            $phoneOtp = Otp::where('phone', $phone_no)->where('otp', $generateOtp)->first();
+            if(Otp::where('phone', $phone_no)->exists()) {
+                if (strlen($generateOtp) == 6) {
                     if ($this->sendSMS($phone_no, $generateOtp, 'is your OTP number .')) {
                         return $this->success([
                             'otp' => $generateOtp,
@@ -165,7 +165,8 @@ class AuthController extends Controller
                 } else {
                     return $this->error(null, "Server error", 500);
                 }
-            }else {
+            }
+            else {
                 return $this->error(null, "Already sent opt code with that phone number", 422);
             }
         }
