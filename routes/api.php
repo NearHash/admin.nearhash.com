@@ -31,9 +31,13 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::group(['prefix' => 'v1/users'], function() {
         Route::controller(\App\Http\Controllers\API\V1\UserController::class)->group(function () {
             Route::get('/', 'index');
+            Route::post('/ban/{id}', 'ban');
+            Route::post('/unban/{id}', 'unBan');
+            Route::delete('/{id}', 'destroy');
         });
         Route::controller(\App\Http\Controllers\API\V1\ProfileController::class)->group(function() {
             Route::get('profile', 'profile');
         });
+
     });
 });
