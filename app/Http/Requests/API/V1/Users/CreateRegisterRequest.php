@@ -24,9 +24,10 @@ class CreateRegisterRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|max:255|unique:users,name',
+            'name' => 'required|max:25',
             'phone' => ['required', 'unique:users,phone', 'min:8', 'max:13'],
-            'password' => ['required', 'min:8', 'regex:/^(?=.*?[a-z])(?=.*?[0-9]).{8,}$/'],
+            'password' => ['required', 'min:6'],
+//            'password' => ['required', 'min:6', 'regex:/^(?=.*?[a-z])(?=.*?[0-9]).{8,}$/'],
         ];
 
         if($this->attributes->has('image')) {
