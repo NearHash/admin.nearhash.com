@@ -1,4 +1,4 @@
-.info-box {
+/* .info-box {
     box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
     border-radius: 0.25rem;
     background: #ffffff;
@@ -56,4 +56,21 @@ font-weight: 500;
 .dashboard_box_text-small {
 font-weight: 500;
 font-size: 17px;
+} */
+
+.dash-card {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+.dash-card:hover {
+    background-color: var(--primary);
+    color: white;
+}
+.dash-icon > span {
+    font-size: 60px;
 }

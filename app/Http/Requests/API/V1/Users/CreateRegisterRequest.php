@@ -26,6 +26,7 @@ class CreateRegisterRequest extends FormRequest
         $rules = [
             'name' => 'required|max:25',
             'phone' => ['required', 'unique:users,phone', 'min:8', 'max:13'],
+            'email' => ['required', 'unique:users,email'], //azp
             'password' => ['required', 'min:6'],
 //            'password' => ['required', 'min:6', 'regex:/^(?=.*?[a-z])(?=.*?[0-9]).{8,}$/'],
         ];
