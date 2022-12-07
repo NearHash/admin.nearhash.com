@@ -4,11 +4,9 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\V1\Users\UserResource;
-use App\Models\API\Profile;
 use App\Models\API\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -21,13 +19,18 @@ class UserController extends Controller
     }
 
     public function ban($id) {
-        $user = User::where('id', $id)->first();
-        if(!$user) {
-            $this->error(null, 'Your user id is invalid.', 400);
+//        $user = User::where('id', $id)->first();
+        try {
+            $user = User::findOrFail($id);
+            $user->is_banned = 1;
+            $user->save();
+            return $this->success(null,'User has been successfully banned.', 200);
+        }catch (\Exception $exception) {
+//            if(is_null($user)) {
+                $this->error(null, 'Your user id is invalid.', 400);
+//            }
         }
-        $user->is_banned = 1;
-        $user->save();
-        return $this->success(null,'User has been successfully banned.', 200);
+
     }
 
     public function unBan($id)
