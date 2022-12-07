@@ -21,46 +21,59 @@ class AuthController extends Controller
     public function uploadNow($image, $path) {
         try {
             $image_name = strtolower(uniqid().'.'.$image->getClientOriginalExtension());
-            $image_full_name = $image_name;
-
-            $image_url = $image_full_name;
-            $success = $image->move($path,$image_full_name);
-            return $image_url;
+            $success = $image->move($path,$image_name);
+            if ($success)
+            {
+                return $image_name;
+            }
         } catch (\Exception $e) {
             return response()->json(['error'=>$e], 422);
         }
+    }
+
+    public function CharGenerate()
+    {
+        $UpperCase = chr(rand(65,90));
+        $NewCase = chr(rand(65,90));
+        $LowerCase = chr(rand(97,122));
+        return 'NH'.$UpperCase.$NewCase;
     }
 
     public function register(CreateRegisterRequest $request)
     {
         $user = new User();
         $user->name = $request->name;
-        $user->phone = $request->phone;
+        $user->name_id = $this->CharGenerate();
         $user->country_code = $request->country_code;
-        $user->name_id = str_shuffle(md5(date("ymdhis")));
+        $user->phone = $request->phone;
         $user->email = $request->email;
         $user->gender = $request->gender;
+        $user->token = str_shuffle(md5(date("ymdhis")));
         $user->date_of_birth = $request->date_of_birth;
-        $user->password = $request->password ? Hash::make($request->password) : NULL;
-        $user->save();
+        $user->password = Hash::make($request->password);
 
-        $token = $user->createToken('AccessToken');
-
-        $photo = NULL;
-        if($request->image) {
+        if($request->image)
+        {
             $photo = $this->uploadNow($request->image, 'users/');
+            $profile = new Profile();
+            $profile->image = $photo;
+            $profile->token = str_shuffle(md5(date("ymdhis")));
+            $profile->user_id = $user->id;
+            if ($profile->save())
+            {
+                if ($user->save())
+                {
+                    $token = $user->createToken('AccessToken');
+                    return $this->success([
+                        'user' => $user->orderBy('id', 'desc')->first(),
+                        "access_token" => $token->plainTextToken,
+                    ], 'Your account has been registered.');
+                }
+            }else{
+                return $this->error(null, 'User profile upload error',500);
+            }
         }
 
-        $profile = new Profile();
-        $profile->image = $photo;
-        $profile->user_id = $user->id;
-        $profile->save();
-
-        return $this->success([
-            'user' => $user->images()->first(),
-//            'profile_image' => $photo,
-            "access_token" => $token->plainTextToken,
-        ], 'Your account has been registered.');
     }
 
     public function login(CreateLoginRequest $request)
@@ -121,9 +134,9 @@ class AuthController extends Controller
                     'Authorization' => "Bearer $token",
                 ],
                 'json' => [
-                    'message' => $otp . ' ' . $message,
                     'to' => $phone,
-                    'sender' => "Green Earner ",
+                    'message' => $otp . ' ' . $message,
+//                    'sender' => 'SMSPoh',
                 ]
             ]);
             $result = json_decode($response->getBody()->getContents(), true);
