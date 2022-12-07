@@ -9,18 +9,18 @@
 }
 
 .title-fm {
-    font-size: 26px !important;
+    font-size: 24px !important;
 }
 
 .content-fm{ 
-    font-size: 20px !important;
+    font-size: 18px !important;
 }
 
 .red-btn {
     box-sizing: border-box !important;
     text-decoration: none;
     border: none;
-    padding: 10px 12px;
+    padding: 10px 14px;
     border-radius: 8px;
     background-color: var(--primary);
     color: white;

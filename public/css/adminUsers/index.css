@@ -20,12 +20,16 @@
 .user-profile-card .profile-img-container{
     width: 100%;
     overflow: hidden;
-    border-radius: 8px;
+    /* border-radius: 8px; */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 .user-profile-card .profile-img-container img{
     width: 100%;
     height: auto;
-    border-radius: 8px;
+    /* border-radius: 8px; */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     transition: all .3s ease;
 }
 

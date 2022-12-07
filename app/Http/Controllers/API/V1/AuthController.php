@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\Users\CreateLoginRequest;
 use App\Http\Requests\API\V1\Users\CreateOtpRequest;
 use App\Http\Requests\API\V1\Users\CreateRegisterRequest;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\API\V1\Users\UserResource;
 use App\Models\API\Otp;
 use App\Models\API\Profile;
@@ -41,8 +42,19 @@ class AuthController extends Controller
         return 'NH'.$UpperCase.$NewCase;
     }
 
-    public function register(CreateRegisterRequest $request)
+    public function register(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:25',
+            'phone' => ['required', 'unique:users,phone', 'min:8', 'max:13'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'country_code' => ['required', 'min:4'],
+            'password' => ['required', 'min:6'],
+        ]);
+        if ( $validator->fails() ) {
+            return $this->error(null, $validator->errors()->first(), 422);
+        }
+
         $user = new User();
         $user->name = $request->name;
         $user->name_id = $this->CharGenerate();
@@ -53,10 +65,10 @@ class AuthController extends Controller
         $user->token = str_shuffle(md5(date("ymdhis")));
         $user->date_of_birth = $request->date_of_birth;
         $user->password = Hash::make($request->password);
-
+        $user->save(); // azp
         if($request->image)
         {
-            $photo = $this->uploadNow($request->image, 'users/');
+            $photo = $this->uploadNow($request->image, "uploads/users/$user->id");
             $profile = new Profile();
             $profile->image = $photo;
             $profile->token = str_shuffle(md5(date("ymdhis")));
@@ -67,7 +79,7 @@ class AuthController extends Controller
                 {
                     $token = $user->createToken('AccessToken');
                     return $this->success([
-                        'user' => $user->orderBy('id', 'desc')->first(),
+                        'user' => new UserResource($user),
                         "access_token" => $token->plainTextToken,
                     ], 'Your account has been registered.');
                 }
@@ -78,13 +90,24 @@ class AuthController extends Controller
 
     }
 
-    public function login(CreateLoginRequest $request)
+    public function login(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'phone' => ['min:8', 'max:13'],
+            'email' => ['email'],
+            'name_id' => ['min:5'],
+            'password' => ['required'],
+        ]);
+        if ( $validator->fails() ) {
+            return $this->error(null, $validator->errors()->first(), 422);
+        }
         $phone = $request->phone;
+        $email = $request->email;
+        $nameId = $request->name_id;
         $password = $request->password;
-        $user = User::where('phone', $phone)->first();
+        $user = User::where('phone', $phone)->orWhere('email', $email)->orWhere('name_id', $nameId)->first(); // azp
         if (!$user) {
-            return $this->error(null, 'Sorry, we couldn\'t find an account with that phone number.', 400);
+            return $this->error(null, 'Sorry, we couldn\'t find an account.', 400);
         }
         $hashed = $user->password;
         $match = Hash::check($password, $hashed);
@@ -107,11 +130,6 @@ class AuthController extends Controller
             ], "You have successfully logged in.", 200);
 
         }
-        // $data['success'] = true;
-        // $data['message'] = 'You have successfully logged in.';
-        // $data['data'] = $res;
-        // $data['access_token'] = $user->createToken('authToken')->plainTextToken;
-        // return response()->json($data, 200);
     }
 
     public function logout(Request $request)
@@ -125,7 +143,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function sendSMS($phone, $otp, $message = 'is Your OTP Number')
+    public function sendSMS($phone, $otp, $message = 'is Your NearHash OTP number.')
     {
         $token = config('sms_poh.access_token');
         //send sms here
@@ -171,7 +189,7 @@ class AuthController extends Controller
             $phoneOtp = Otp::where('phone', $phone_no)->where('otp', $generateOtp)->first();
             if(Otp::where('phone', $phone_no)->exists()) {
                 if (strlen($generateOtp) == 6) {
-                    if ($this->sendSMS($phone_no, $generateOtp, 'is your OTP number .')) {
+                    if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
                         return $this->success([
                             'otp' => $generateOtp,
                             'phone' => $phone_no,

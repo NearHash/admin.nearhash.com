@@ -98,12 +98,29 @@
                 </div>
                 <div class="content p-3">
                     <div class="title-fm">Peter Parker</div>
-                    <div class="content-fm mt-2">Yangon | Hlandan Township</div>
+                    <div class="content-fm mt-2">Yangon | Hledan Township</div>
                 </div>
             </div>
         </div>
 
     </div>
+
+    <nav aria-label="..." class="mt-3 d-flex justify-content-end">
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+    </nav>
+
 </div>
 
 @endsection

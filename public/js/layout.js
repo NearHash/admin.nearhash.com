@@ -31,20 +31,23 @@ body.addEventListener("click", () => {
 // sidebar inner data 
 
 let dropTags = document.getElementsByClassName('dropNav')
-console.log(dropTags)
-
+let asideIconTags = document.getElementsByClassName('aside-icon')
 
 let dropTagAction = (dropId) => {
     let dropIdTag = document.getElementById(`${dropId}`)
+    let asideIconTag = document.getElementById(`${dropId}`+'-icon')
 
     if (dropIdTag.classList.contains('open-drop')){
+        asideIconTag.classList.remove('aside-icon-action')
         dropIdTag.classList.remove('open-drop')
     }else {
         for(let i = 0; i < dropTags.length ; i++) {
             dropTags[i].classList.remove('open-drop')
+            asideIconTags[i].classList.remove('aside-icon-action')
         }
         setTimeout(()=>{
             dropIdTag.classList.add('open-drop')
-        }, 200)
+            asideIconTag.classList.add('aside-icon-action')
+        }, 100)
     }
 }
