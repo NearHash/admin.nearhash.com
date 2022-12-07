@@ -1,0 +1,27 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #ED1C24;
+}
+
+.title-fm {
+    font-size: 26px !important;
+}
+
+.content-fm{ 
+    font-size: 20px !important;
+}
+
+.red-btn {
+    box-sizing: border-box !important;
+    text-decoration: none;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background-color: var(--primary);
+    color: white;
+}

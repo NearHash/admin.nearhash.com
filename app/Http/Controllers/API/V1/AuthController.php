@@ -13,6 +13,8 @@ use App\Models\API\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use GuzzleHttp\Client;
+use Exception;
 
 class AuthController extends Controller
 {
