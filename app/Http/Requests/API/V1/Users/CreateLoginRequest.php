@@ -24,7 +24,8 @@ class CreateLoginRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'phone' => 'required',
+            'phone' => 'min:9',
+            'email' => 'email',
             'password' => 'required'
         ];
 
