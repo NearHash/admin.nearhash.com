@@ -1,0 +1,42 @@
+@extends('backend.layouts.app')
+@section('title', 'Admin Users')
+@section('extra_css')
+<link rel="stylesheet" href="{{ asset('css/adminUsers/create.css')}}">
+@endsection
+@section('content')
+
+<h3>Admin Users Create Form</h3>
+
+<div class="card border-0 p-3 mt-3">
+    <div class="row">
+        <div class="col-lg-10 col-xl-8">
+            <form action="" class="content-fm">
+                <div class="form-group mb-3">
+                    <label for="" class="form-label">Name</label>
+                    <input type="text" name="name" class="form-input form-control content-fm" autocomplete="off">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="" class="form-label">Username</label>
+                    <input type="text" name="username" class="form-input form-control content-fm" autocomplete="off">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="" class="form-label">Email</label>
+                    <input type="email" name="email" class="form-input form-control content-fm" autocomplete="off">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="" class="form-label">Phone</label>
+                    <input type="number" name="phone" class="form-input form-control content-fm" autocomplete="off">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input form-control content-fm" autocomplete="off">
+                </div>
+                <div>
+                    <button type="submit" class="red-btn">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@endsection
