@@ -68,8 +68,8 @@ class AuthController extends Controller
         $user->date_of_birth = $request->date_of_birth;
         $user->password = Hash::make($request->password);
         $otp = Otp::where('phone', $request->phone)->first();
-//        if($otp) {
-//            $user->save(); // azp
+        if($otp) {
+            $user->save(); // azp
             if($request->image)
             {
                 $photo = $this->uploadNow($request->image, "uploads/users/$user->id");
@@ -91,9 +91,9 @@ class AuthController extends Controller
                     return $this->error(null, 'User profile upload error',500);
                 }
             }
-//        }else {
-//            $this->error(null, "Your phone no is not verified", 422);
-//        }
+        }else {
+            return $this->error(null, "Your phone no is not verified", 422);
+        }
 
 
     }
@@ -204,8 +204,6 @@ class AuthController extends Controller
                         'phone' => $phone_no,
                     ], "OTP successfully sent!", 200);
                 }
-            }else {
-                $this->error(null, 'Something went wrong', 422);
             }
         }
     }
