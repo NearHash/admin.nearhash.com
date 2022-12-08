@@ -221,11 +221,10 @@ class AuthController extends Controller
 //            }
             $otpVerify = Otp::where('phone', $phone_no)->orderBy('id', 'desc')->first();
             if (!$otpVerify) {
-                return $this->error(null, 'Sorry, we couldn\'t find that phone number.', 422);
+                return $this->error(null, 'Sorry, we couldn\'t find otp with that phone number.', 422);
             }
             if ($otpVerify->otp == $otp) {
-//                $tokenResult = $user->createToken('Personal Access Token');
-//                $token = $tokenResult->plainTextToken;
+                $otpVerify->delete();
                 return $this->success(null, "OTP verified successfully!", 200);
             } else {
                 return $this->error(null, 'Your OTP is incorrect', 422);

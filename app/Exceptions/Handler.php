@@ -40,17 +40,17 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function report(\Exception $exception)
-    {
-        parent::report($exception);
-    }
+    // public function report(\Exception $exception)
+    // {
+    //     parent::report($exception);
+    // }
 
-    public function render($request, \Exception $exception)
-    {
-        if ($exception instanceof ModelNotFoundException) {
-            return response()->json(['error' => 'Record not found.']);
-        }
+    // public function render($request, \Exception $exception)
+    // {
+    //     if ($exception instanceof ModelNotFoundException) {
+    //         return response()->json(['error' => 'Record not found.']);
+    //     }
 
-        return parent::render($request, $exception);
-    }
+    //     return parent::render($request, $exception);
+    // }
 }
