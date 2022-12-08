@@ -66,27 +66,31 @@ class AuthController extends Controller
         $user->token = str_shuffle(md5(date("ymdhis")));
         $user->date_of_birth = $request->date_of_birth;
         $user->password = Hash::make($request->password);
-        $user->save(); // azp
-        if($request->image)
+        if($user->save())
         {
-            $photo = $this->uploadNow($request->image, "uploads/users/$user->id");
-            $profile = new Profile();
-            $profile->image = $photo;
-            $profile->token = str_shuffle(md5(date("ymdhis")));
-            $profile->user_id = $user->id;
-            if ($profile->save())
+            if($request->image)
             {
-                if ($user->save())
+                $photo = $this->uploadNow($request->image, "uploads/users/$user->id");
+                $profile = new Profile();
+                $profile->image = $photo;
+                $profile->token = str_shuffle(md5(date("ymdhis")));
+                $profile->user_id = $user->id;
+                if ($profile->save())
                 {
-                    $token = $user->createToken('AccessToken');
-                    return $this->success([
-                        'user' => new UserResource($user),
-                        "access_token" => $token->plainTextToken,
-                    ], 'Your account has been registered.');
+                    if ($user->save())
+                    {
+                        $token = $user->createToken('AccessToken');
+                        return $this->success([
+                            'user' => new UserResource($user),
+                            "access_token" => $token->plainTextToken,
+                        ], 'Your account has been registered.');
+                    }
+                }else{
+                    return $this->error(null, 'User profile upload error',500);
                 }
-            }else{
-                return $this->error(null, 'User profile upload error',500);
             }
+        }else{
+            return $this->error(null, 'Saving user in internal server error occurred.',500);
         }
 
     }
