@@ -48,8 +48,9 @@ class AuthController extends Controller
             'name' => 'required|max:25',
             'phone' => ['required', 'unique:users,phone', 'min:8', 'max:13'],
             'email' => ['required', 'email', 'unique:users,email'],
-            'country_code' => ['required', 'min:4'],
+            'country_code' => ['required', 'min:3', 'max:6'],
             'password' => ['required', 'min:6'],
+            'image' => ['required']
         ]);
         if ( $validator->fails() ) {
             return $this->error(null, $validator->errors()->first(), 422);
