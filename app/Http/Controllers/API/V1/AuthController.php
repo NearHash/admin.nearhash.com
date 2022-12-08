@@ -67,28 +67,34 @@ class AuthController extends Controller
         $user->token = str_shuffle(md5(date("ymdhis")));
         $user->date_of_birth = $request->date_of_birth;
         $user->password = Hash::make($request->password);
-        $user->save(); // azp
-        if($request->image)
-        {
-            $photo = $this->uploadNow($request->image, "uploads/users/$user->id");
-            $profile = new Profile();
-            $profile->image = $photo;
-            $profile->token = str_shuffle(md5(date("ymdhis")));
-            $profile->user_id = $user->id;
-            if ($profile->save())
+        $otp = Otp::where('phone', $request->phone)->first();
+//        if($otp) {
+//            $user->save(); // azp
+            if($request->image)
             {
-                if ($user->save())
+                $photo = $this->uploadNow($request->image, "uploads/users/$user->id");
+                $profile = new Profile();
+                $profile->image = $photo;
+                $profile->token = str_shuffle(md5(date("ymdhis")));
+                $profile->user_id = $user->id;
+                if ($profile->save())
                 {
-                    $token = $user->createToken('AccessToken');
-                    return $this->success([
-                        'user' => new UserResource($user),
-                        "access_token" => $token->plainTextToken,
-                    ], 'Your account has been registered.');
+                    if ($user->save())
+                    {
+                        $token = $user->createToken('AccessToken');
+                        return $this->success([
+                            'user' => new UserResource($user),
+                            "access_token" => $token->plainTextToken,
+                        ], 'Your account has been registered.');
+                    }
+                }else{
+                    return $this->error(null, 'User profile upload error',500);
                 }
-            }else{
-                return $this->error(null, 'User profile upload error',500);
             }
-        }
+//        }else {
+//            $this->error(null, "Your phone no is not verified", 422);
+//        }
+
 
     }
 
@@ -187,12 +193,10 @@ class AuthController extends Controller
             return $this->error(null, $message, 422);
         } else {
             $phone_no = $phone;
-//            $phoneOtp = Otp::where('phone', $phone_no)->where('otp', $generateOtp)->orderBy('id', 'desc')->first();
-            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->whereDate('created_at', Carbon::today())->first();
-            if ($otpVerified) {
-                return $this->error(null, "OTP code already sent to you.", 500);
-
-            } else {
+            $otp = Otp::where('phone', $phone_no)->orderBy('id', 'desc')->first();
+//            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->first();
+//            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->orderBy('id', 'desc')->first();
+            if ($otp) {
                 $generateOtp = $this->generateOTP($phone_no);
                 if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
                     return $this->success([
@@ -200,6 +204,8 @@ class AuthController extends Controller
                         'phone' => $phone_no,
                     ], "OTP successfully sent!", 200);
                 }
+            }else {
+                $this->error(null, 'Something went wrong', 422);
             }
         }
     }
