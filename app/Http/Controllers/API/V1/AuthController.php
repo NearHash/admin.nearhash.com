@@ -191,10 +191,10 @@ class AuthController extends Controller
             return $this->error(null, $message, 422);
         } else {
             $phone_no = $phone;
-            $otp = Otp::where('phone', $phone_no)->orderBy('id', 'desc')->first();
+//            $otp = Otp::where('phone', $phone_no)->orderBy('id', 'desc')->first();
 //            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->first();
 //            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->orderBy('id', 'desc')->first();
-            if ($otp) {
+//            if ($otp) {
                 $generateOtp = $this->generateOTP($phone_no);
                 if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
                     return $this->success([
@@ -202,7 +202,7 @@ class AuthController extends Controller
                         'phone' => $phone_no,
                     ], "OTP successfully sent!", 200);
                 }
-            }
+//            }
         }
     }
 
@@ -221,7 +221,8 @@ class AuthController extends Controller
                 return $this->error(null, 'Sorry, we couldn\'t find that phone number.', 422);
             }
             if ($otpVerify->otp == $otp) {
-                $otpVerify->delete();
+                $otpVerify->is_verify = 1;
+                $otpVerify->save();
                 return $this->success(null, "OTP verified successfully! || Go to register screen .", 200);
             } else {
                 return $this->error(null, 'Your OTP is incorrect', 422);
