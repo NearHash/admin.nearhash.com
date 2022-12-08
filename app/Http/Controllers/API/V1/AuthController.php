@@ -191,12 +191,10 @@ class AuthController extends Controller
             return $this->error(null, $message, 422);
         } else {
             $phone_no = $phone;
-//            $phoneOtp = Otp::where('phone', $phone_no)->where('otp', $generateOtp)->orderBy('id', 'desc')->first();
-            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->whereDate('created_at', Carbon::today())->first();
-            if ($otpVerified) {
-                return $this->error(null, "OTP code already sent to you.", 500);
-
-            } else {
+            $otp = Otp::where('phone', $phone_no)->orderBy('id', 'desc')->first();
+//            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->first();
+//            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->orderBy('id', 'desc')->first();
+            if ($otp) {
                 $generateOtp = $this->generateOTP($phone_no);
                 if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
                     return $this->success([
@@ -204,6 +202,8 @@ class AuthController extends Controller
                         'phone' => $phone_no,
                     ], "OTP successfully sent!", 200);
                 }
+            }else {
+                $this->error(null, 'Something went wrong', 422);
             }
         }
     }
