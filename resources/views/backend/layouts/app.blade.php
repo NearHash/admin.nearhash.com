@@ -27,7 +27,7 @@
 <body>
 
     <div class="sidebar shadow">
-        
+
         <div class="logo-container mb-3">
             <img class="logo" class="" src="{{ asset('logo.png') }}" alt="">
         </div>
@@ -154,7 +154,7 @@
 
     </div>
 
-    
+
     <div class="main">
         <nav class="header">
             <div class="menuContainer d-flex align-items-center">
@@ -171,9 +171,10 @@
                     <li class="d-flex flex-column justify-content-center align-items-center p-2">
                         <div>Aung Zaw Phyo</div>
                         <div class="my-2">User Analyst</div>
-                        
-                        <form action="#" method="POST">
-                            <button class="btn btn-link text-decoration-none d-flex justify-content-center align-items-center"><i class="fa fa-fw fa-power-off"></i> Logout</button>
+
+                        <form action="{{ route('logout') }}" method="POST" >
+                            @csrf
+                            <button type="submit" class="btn btn-link text-decoration-none d-flex justify-content-center align-items-center"><i class="fa fa-fw fa-power-off"></i> Logout</button>
                         </form>
                     </li>
                 </ul>
@@ -183,7 +184,7 @@
             <div class="body mt-2">
 
                 @yield('content')
-                
+
             </div>
         </div>
         <footer class="shadow-lg">
@@ -197,7 +198,7 @@
     <script>
         $(document).ready(
             function () {
-                $('.back-btn').on('click', function () { 
+                $('.back-btn').on('click', function () {
                     window.history.go(-1)
                     return false
                 })
