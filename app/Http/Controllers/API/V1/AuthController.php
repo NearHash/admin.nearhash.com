@@ -67,6 +67,11 @@ class AuthController extends Controller
         $user->token = str_shuffle(md5(date("ymdhis")));
         $user->date_of_birth = $request->date_of_birth;
         $user->password = Hash::make($request->password);
+        $otp = Otp::where('phone', $request->phone)->where('is_verify', true)->first();
+        if (!$otp)
+        {
+            return $this->error(null, 'OTP verify failed.',500);
+        }
         if($user->save())
         {
             if($request->image)
