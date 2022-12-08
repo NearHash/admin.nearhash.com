@@ -24,7 +24,7 @@ class UserResource extends JsonResource
 //            'account_type' => $this->account_type,
             'date_of_birth' => $this->date_of_birth,
             'gender' => $this->gender,
-//            'profile' => $this->getImageUrlAttribute(),
+            'profile' => null,
 //            'hide_show' => $this->hide_show,
 //            'is_banned' => $this->is_banned,
         ];
