@@ -200,13 +200,13 @@ class AuthController extends Controller
 //            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->first();
 //            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->orderBy('id', 'desc')->first();
 //            if ($otp) {
-                $generateOtp = $this->generateOTP($phone_no);
-                if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
-                    return $this->success([
-                        'otp' => $generateOtp,
-                        'phone' => $phone_no,
-                    ], "OTP successfully sent!", 200);
-                }
+            $generateOtp = $this->generateOTP($phone_no);
+            if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
+                return $this->success([
+                    'otp' => $generateOtp,
+                    'phone' => $phone_no,
+                ], "OTP successfully sent!", 200);
+            }
 //            }
         }
     }
