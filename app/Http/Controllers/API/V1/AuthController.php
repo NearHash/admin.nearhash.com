@@ -223,6 +223,7 @@ class AuthController extends Controller
                 return $this->error(null, 'Sorry, we couldn\'t find that phone number.', 422);
             }
             if ($otpVerify->otp == $otp) {
+                $otpVerify->delete();
                 return $this->success(null, "OTP verified successfully! || Go to register screen .", 200);
             } else {
                 return $this->error(null, 'Your OTP is incorrect', 422);
