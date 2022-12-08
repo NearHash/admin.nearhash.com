@@ -46,8 +46,9 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::with('images')->findOrFail($id);
-        if(!$user) {
+        $user = User::with('images')->find($id);
+
+        if($user == null) {
             $this->error(null, 'Your user id is invalid.', 400);
         }
         foreach ($user->images as $image) {
