@@ -12,7 +12,7 @@ class ProfileController extends Controller
     use HttpResponses;
     public function profile(Request $request)
     {
-        $user = User::where('id', $request->user()->id)->first();
+        $user = User::with('images')->where('id', $request->user()->id)->first();
         if (!$user) {
             return $this->error(null, 'Sorry, we couldn\'t find that user.', 400);
         }
