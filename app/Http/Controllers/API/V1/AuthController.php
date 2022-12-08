@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\Users\CreateLoginRequest;
 use App\Http\Requests\API\V1\Users\CreateOtpRequest;
 use App\Http\Requests\API\V1\Users\CreateRegisterRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\API\V1\Users\UserResource;
 use App\Models\API\Otp;
@@ -47,10 +48,10 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:25',
             'phone' => ['required', 'unique:users,phone', 'min:8', 'max:13'],
-            'email' => ['required', 'email', 'unique:users,email'],
+            'email' => [ 'email', 'unique:users,email'],
             'country_code' => ['required', 'min:3', 'max:6'],
             'password' => ['required', 'min:6'],
-//            'image' => ['required']
+            'image' => ['required']
         ]);
         if ( $validator->fails() ) {
             return $this->error(null, $validator->errors()->first(), 422);
@@ -186,22 +187,19 @@ class AuthController extends Controller
             return $this->error(null, $message, 422);
         } else {
             $phone_no = $phone;
-            $generateOtp = $this->generateOTP($phone_no);
-            $phoneOtp = Otp::where('phone', $phone_no)->where('otp', $generateOtp)->first();
-            if(Otp::where('phone', $phone_no)->exists()) {
-                if (strlen($generateOtp) == 6) {
-                    if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
-                        return $this->success([
-                            'otp' => $generateOtp,
-                            'phone' => $phone_no,
-                        ], "OTP successfully sent!", 200);
-                    }
-                } else {
-                    return $this->error(null, "Server error", 500);
+//            $phoneOtp = Otp::where('phone', $phone_no)->where('otp', $generateOtp)->orderBy('id', 'desc')->first();
+            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->whereDate('created_at', Carbon::today())->first();
+            if ($otpVerified) {
+                return $this->error(null, "OTP code already sent to you.", 500);
+
+            } else {
+                $generateOtp = $this->generateOTP($phone_no);
+                if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
+                    return $this->success([
+                        'otp' => $generateOtp,
+                        'phone' => $phone_no,
+                    ], "OTP successfully sent!", 200);
                 }
-            }
-            else {
-                return $this->error(null, "Already sent opt code with that phone number", 422);
             }
         }
     }
@@ -216,17 +214,12 @@ class AuthController extends Controller
             return $this->error(null, $message, 422);
         } else {
             $phone_no = $phone;
-//            $user = User::where('phone', $phone_no)->first();
-//            if(!$user) {
-//                return $this->error(null,'Sorry, we couldn\'t find that phone number.', 422);
-//            }
             $otpVerify = Otp::where('phone', $phone_no)->orderBy('id', 'desc')->first();
             if (!$otpVerify) {
-                return $this->error(null, 'Sorry, we couldn\'t find otp with that phone number.', 422);
+                return $this->error(null, 'Sorry, we couldn\'t find that phone number.', 422);
             }
             if ($otpVerify->otp == $otp) {
-                $otpVerify->delete();
-                return $this->success(null, "OTP verified successfully!", 200);
+                return $this->success(null, "OTP verified successfully! || Go to register screen .", 200);
             } else {
                 return $this->error(null, 'Your OTP is incorrect', 422);
             }
