@@ -187,21 +187,16 @@ class AuthController extends Controller
         } else {
             $phone_no = $phone;
             $generateOtp = $this->generateOTP($phone_no);
-            $phoneOtp = Otp::where('phone', $phone_no)->where('otp', $generateOtp)->first();
-            if(Otp::where('phone', $phone_no)->exists()) {
-                if (strlen($generateOtp) == 6) {
-                    if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
-                        return $this->success([
-                            'otp' => $generateOtp,
-                            'phone' => $phone_no,
-                        ], "OTP successfully sent!", 200);
-                    }
-                } else {
-                    return $this->error(null, "Server error", 500);
+            $phoneOtp = Otp::where('phone', $phone_no)->where('otp', $generateOtp)->orderBy('id', 'desc')->first();
+            if ($phoneOtp) {
+                if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
+                    return $this->success([
+                        'otp' => $generateOtp,
+                        'phone' => $phone_no,
+                    ], "OTP successfully sent!", 200);
                 }
-            }
-            else {
-                return $this->error(null, "Already sent opt code with that phone number", 422);
+            } else {
+                return $this->error(null, "Server error", 500);
             }
         }
     }
@@ -216,18 +211,12 @@ class AuthController extends Controller
             return $this->error(null, $message, 422);
         } else {
             $phone_no = $phone;
-//            $user = User::where('phone', $phone_no)->first();
-//            if(!$user) {
-//                return $this->error(null,'Sorry, we couldn\'t find that phone number.', 422);
-//            }
             $otpVerify = Otp::where('phone', $phone_no)->orderBy('id', 'desc')->first();
             if (!$otpVerify) {
                 return $this->error(null, 'Sorry, we couldn\'t find that phone number.', 422);
             }
             if ($otpVerify->otp == $otp) {
-//                $tokenResult = $user->createToken('Personal Access Token');
-//                $token = $tokenResult->plainTextToken;
-                return $this->success(null, "OTP verified successfully!", 200);
+                return $this->success(null, "OTP verified successfully! || Go to register screen .", 200);
             } else {
                 return $this->error(null, 'Your OTP is incorrect', 422);
             }
