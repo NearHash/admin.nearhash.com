@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Resources\API\V1\Users;
-
+use App\Models\API\Profile;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -14,15 +14,17 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
             'email' => $this->email,
             'country_code' => $this->country_code,
-            'account_type' => $this->account_type,
+//            'account_type' => $this->account_type,
             'date_of_birth' => $this->date_of_birth,
             'gender' => $this->gender,
+//            'profile' => $this->getImageUrlAttribute(),
 //            'hide_show' => $this->hide_show,
 //            'is_banned' => $this->is_banned,
         ];

@@ -83,7 +83,7 @@ class AuthController extends Controller
                         return $this->success([
                             'user' => new UserResource($user),
                             "access_token" => $token->plainTextToken,
-                        ], 'Your account has been registered.');
+                        ], 'Your account successfully registered.');
                     }
                 }else{
                     return $this->error(null, 'User profile upload error',500);

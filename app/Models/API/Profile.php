@@ -17,6 +17,6 @@ class Profile extends Model
 
     public function getImageUrlAttribute()
     {
-        return asset('/users/'.$this->image);
+        return asset("/users/$this->id/$this->image");
     }
 }
