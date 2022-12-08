@@ -202,8 +202,6 @@ class AuthController extends Controller
                         'phone' => $phone_no,
                     ], "OTP successfully sent!", 200);
                 }
-            }else {
-                $this->error(null, 'Something went wrong', 422);
             }
         }
     }

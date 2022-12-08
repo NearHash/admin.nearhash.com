@@ -18,7 +18,7 @@ class ProfileController extends Controller
         }
 
         $data = $user;
-        return $this->success($data, "Your profile has been successfully updated.", 200);
+        return $this->success($data, "Your profile has been successfully .", 200);
 
     }
 }
