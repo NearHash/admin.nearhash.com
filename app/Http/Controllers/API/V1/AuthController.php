@@ -35,7 +35,7 @@ class AuthController extends Controller
         }
     }
 
-    public function CharGenerate()
+    public function chrGenerator()
     {
         $UpperCase = chr(rand(65,90));
         $NewCase = chr(rand(65,90));
@@ -59,7 +59,7 @@ class AuthController extends Controller
 
         $user = new User();
         $user->name = $request->name;
-        $user->name_id = $this->CharGenerate();
+        $user->name_id = $this->chrGenerator();
         $user->country_code = $request->country_code;
         $user->phone = $request->phone;
         $user->email = $request->email;
