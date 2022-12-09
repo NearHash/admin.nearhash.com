@@ -57,7 +57,7 @@
                         <i class="fa fa-angle-right aside-icon " id="ecom-icon"></i>
                     </a>
                     <ul>
-                        <li><p><a href="{{ route('admin.users.index') }}">Users</a></p></li>
+                        <li class="{{ Route::currentRouteName() == 'admin.users.index'  ? 'active-link' : null;}}"><p><a href="{{ route('admin.users.index') }}">Users</a></p></li>
                         <li><p>Additional</p></li>
                         <li><p>Additional</p></li>
                     </ul>

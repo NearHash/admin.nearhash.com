@@ -9,6 +9,8 @@ class Profile extends Model
 {
     use HasFactory;
 
+    protected  $table = 'profiles';
+
     protected $appends = ['image_url'];
 
     public function profile () {

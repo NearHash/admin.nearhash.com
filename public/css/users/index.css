@@ -35,3 +35,8 @@
 .user-profile-card .content{
     font-family: Roboto,Arial,Helvetica,sans-serif;
 }
+
+.phone {
+    display: flex;
+    align-items: center;
+}
