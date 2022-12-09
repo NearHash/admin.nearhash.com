@@ -45,7 +45,7 @@
                     groups
                 </span>
             </div>
-            <div class="text-center mt-4">
+            <div class="text-center mt-3">
                 <div class="title-fm">App Users</div>
                 <div class="content-fm mt-2">
                     <div>98k</div>
@@ -60,10 +60,10 @@
             <div class="dash-icon">
                 {{-- <i class="fa-solid fa-signs-post"></i> --}}
                 <span class="material-symbols-rounded">
-                    signpost
+                    dashboard
                 </span>
             </div>
-            <div class="text-center mt-4">
+            <div class="text-center mt-3">
                 <div class="title-fm">Total Posts</div>
                 <div class="content-fm mt-2">
                     <div>
@@ -80,10 +80,10 @@
             <div class="dash-icon">
                 {{-- <i class="fa-solid fa-signs-post"></i> --}}
                 <span class="material-symbols-rounded">
-                    signpost
+                    dashboard
                 </span>
             </div>
-            <div class="text-center mt-4">
+            <div class="text-center mt-3">
                 <div class="title-fm">Today Posts</div>
                 <div class="content-fm mt-2">
                     <div>10k</div>
@@ -101,7 +101,7 @@
                     hotel_class
                 </span>
             </div>
-            <div class="text-center mt-4">
+            <div class="text-center mt-3">
                 <div class="title-fm">Rating</div>
                 <div class="content-fm mt-2">
                     <div>10k</div>
