@@ -103,20 +103,20 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'phone' => ['min:8', 'max:13'],
-            'email' => ['email'],
-            'name_id' => ['min:5'],
-            'password' => ['required'],
-        ]);
-        if ( $validator->fails() ) {
-            return $this->error(null, $validator->errors()->first(), 422);
-        }
-        $phone = $request->phone;
-        $email = $request->email;
-        $nameId = $request->name_id;
+//        $validator = Validator::make($request->all(), [
+//            'phone' => ['required'],
+//            'email' => ['email'],
+//            'name_id' => ['min:5'],
+//            'password' => ['required'],
+//        ]);
+//        if ( $validator->fails() ) {
+//            return $this->error(null, $validator->errors()->first(), 422);
+//        }
+        $username = $request->username;
+//        $email = $request->email;
+//        $nameId = $request->name_id;
         $password = $request->password;
-        $user = User::where('phone', $phone)->orWhere('email', $email)->orWhere('name_id', $nameId)->first(); // azp
+        $user = User::where('phone', $username)->orWhere('email', $username)->orWhere('name_id', $username)->first(); // azp
         if (!$user) {
             return $this->error(null, 'Sorry, we couldn\'t find an account.', 400);
         }
@@ -187,24 +187,28 @@ class AuthController extends Controller
         }
     }
 
-    public function sendOtp(CreateOtpRequest $request)
+    public function sendOtp(Request $request)
     {
         $phone = $request->phone;
-        if (isset($request->validator) && $request->validator->fails()) {
-            $validator = $request->validator;
-            $message = $validator->errors();
-            return $this->error(null, $message, 422);
-        } else {
-            $phone_no = $phone;
+        $validator = Validator::make($request->all(), [
+            'phone' => ['required','min:8', 'max:14'],
+        ]);
+        if ( $validator->fails() ) {
+            return $this->error(null, $validator->errors()->first(), 422);
+        }else {
 //            $otp = Otp::where('phone', $phone_no)->orderBy('id', 'desc')->first();
 //            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->first();
 //            $otpVerified = Otp::where('phone', $phone_no)->where('is_verify', 0)->orderBy('id', 'desc')->first();
 //            if ($otp) {
-            $generateOtp = $this->generateOTP($phone_no);
-            if ($this->sendSMS($phone_no, $generateOtp, 'is your NearHash OTP number.')) {
+            if($this->checkUser($phone))
+            {
+                return $this->error(null, 'User already registered . | Go to login', 422);
+            }
+            $generateOtp = $this->generateOTP($phone);
+            if ($this->sendSMS($phone, $generateOtp, 'is your NearHash OTP number.')) {
                 return $this->success([
                     'otp' => $generateOtp,
-                    'phone' => $phone_no,
+                    'phone' => $phone,
                 ], "OTP successfully sent!", 200);
             }
 //            }
@@ -232,6 +236,16 @@ class AuthController extends Controller
             } else {
                 return $this->error(null, 'Your OTP is incorrect', 422);
             }
+        }
+    }
+
+    public function checkUser($phone)
+    {
+        $OutUsers = User::where('phone',$phone)->get();
+        if (count($OutUsers) >= 1){
+            return true;
+        }else{
+            return false;
         }
     }
 
