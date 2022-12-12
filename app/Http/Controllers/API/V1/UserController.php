@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\API\V1\Users\UserResource;
+use App\Models\API\AppUser;
 use App\Models\API\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class UserController extends Controller
     use HttpResponses;
     public function index()
     {
-        $users = User::latest()->paginate(10);
+        $users = AppUser::latest()->paginate(10);
         $user_resource = UserResource::collection($users);
         return $this->success($user_resource, 'Users', 200);
     }
@@ -21,7 +22,7 @@ class UserController extends Controller
     public function ban($id) {
 //        $user = User::where('id', $id)->first();
         try {
-            $user = User::findOrFail($id);
+            $user = AppUser::findOrFail($id);
             $user->is_banned = 1;
             $user->save();
             return $this->success(null,'User has been successfully banned.', 200);

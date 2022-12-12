@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\V1\Users\CreateLoginRequest;
-use App\Http\Requests\API\V1\Users\CreateOtpRequest;
-use App\Http\Requests\API\V1\Users\CreateRegisterRequest;
+use Exception;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
+use App\Models\API\Otp;
+use App\Models\API\User;
+use App\Models\API\AppUser;
+use App\Models\API\Profile;
+use Illuminate\Http\Request;
+use App\Traits\HttpResponses;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\API\V1\Users\UserResource;
-use App\Models\API\Otp;
-use App\Models\API\Profile;
-use App\Models\API\User;
-use App\Traits\HttpResponses;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use GuzzleHttp\Client;
-use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use App\Http\Requests\API\V1\Users\CreateOtpRequest;
+use App\Http\Requests\API\V1\Users\CreateLoginRequest;
+use App\Http\Requests\API\V1\Users\CreateRegisterRequest;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class AuthController extends Controller
 {
@@ -47,8 +51,8 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:25',
-            'phone' => ['required', 'unique:users,phone', 'min:8', 'max:13'],
-            'email' => [ 'email', 'unique:users,email'],
+            'phone' => ['required', 'unique:app_users,phone', 'min:8', 'max:13'],
+            'email' => [ 'email', 'unique:app_users,email'],
             'country_code' => ['required', 'min:3', 'max:6'],
             'password' => ['required', 'min:6'],
             'image' => ['required']
@@ -57,7 +61,7 @@ class AuthController extends Controller
             return $this->error(null, $validator->errors()->first(), 422);
         }
 
-        $user = new User();
+        $user = new AppUser();
         $user->name = $request->name;
         $user->name_id = $this->chrGenerator();
         $user->country_code = $request->country_code;
@@ -80,7 +84,7 @@ class AuthController extends Controller
                 $profile = new Profile();
                 $profile->image = $photo;
                 $profile->token = str_shuffle(md5(date("ymdhis")));
-                $profile->user_id = $user->id;
+                $profile->app_user_id = $user->id;
                 if ($profile->save())
                 {
                     if ($user->save())
@@ -92,6 +96,7 @@ class AuthController extends Controller
                         ], 'Your account successfully registered.');
                     }
                 }else{
+                    // $user->delete();
                     return $this->error(null, 'User profile upload error',500);
                 }
             }
@@ -103,20 +108,9 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-//        $validator = Validator::make($request->all(), [
-//            'phone' => ['required'],
-//            'email' => ['email'],
-//            'name_id' => ['min:5'],
-//            'password' => ['required'],
-//        ]);
-//        if ( $validator->fails() ) {
-//            return $this->error(null, $validator->errors()->first(), 422);
-//        }
         $username = $request->username;
-//        $email = $request->email;
-//        $nameId = $request->name_id;
         $password = $request->password;
-        $user = User::where('phone', $username)->orWhere('email', $username)->orWhere('name_id', $username)->first(); // azp
+        $user = AppUser::where('phone', $username)->orWhere('email', $username)->orWhere('name_id', $username)->first(); // azp
         if (!$user) {
             return $this->error(null, 'Sorry, we couldn\'t find an account.', 400);
         }
@@ -241,7 +235,7 @@ class AuthController extends Controller
 
     public function checkUser($phone)
     {
-        $OutUsers = User::where('phone',$phone)->get();
+        $OutUsers = AppUser::where('phone',$phone)->get();
         if (count($OutUsers) >= 1){
             return true;
         }else{

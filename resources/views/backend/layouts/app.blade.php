@@ -36,28 +36,28 @@
                 <li class=""><a href="{{ route('admin.home') }}"><i class="fa fa-home"></i> Dashboard</a></li>
             </ul>
             <ul class="m-0 p-0">
-                <li id="admin"  class="dropNav {{ Request::segment(2) == 'admin-users'  ?  'open-drop' : null }}">
+                <li id="admin"  class="dropNav {{ Request::segment(2) == 'admin-user'  ?  'open-drop' : null }}">
                     <a href="javascript:void(0)" onclick="dropTagAction('admin')">
                         <i class="fa fa-users"></i>
                         <span>Admin Management</span>
                         <i class="fa fa-angle-right aside-icon " id="admin-icon"></i>
                     </a>
                     <ul>
-                        <li class="{{ Route::currentRouteName() == 'admin.admin-users.index' || Route::currentRouteName() == 'admin.admin-users.create' ? 'active-link' : null;}}">
-                            <p><a href="{{ route('admin.admin-users.index') }}">Admin Users</a></p>
+                        <li class="{{ Route::currentRouteName() == 'admin.admin-user.index' || Route::currentRouteName() == 'admin.admin-user.create' ? 'active-link' : null;}}">
+                            <p><a href="{{ route('admin.admin-user.index') }}">Admin Users</a></p>
                         </li>
                         <li><p>Additional</p></li>
                         <li><p>Additional</p></li>
                     </ul>
                 </li>
-                <li id="ecom"  class="dropNav {{ Request::segment(2) == 'users'  ?  'open-drop' : null }}">
-                    <a href="javascript:void(0)" onclick="dropTagAction('ecom')">
+                <li id="user"  class="dropNav {{ Request::segment(2) == 'user'  ?  'open-drop' : null }}">
+                    <a href="javascript:void(0)" onclick="dropTagAction('user')">
                         <i class="fa fa-users"></i>
                         <span>User Management</span>
-                        <i class="fa fa-angle-right aside-icon " id="ecom-icon"></i>
+                        <i class="fa fa-angle-right aside-icon " id="user-icon"></i>
                     </a>
                     <ul>
-                        <li class="{{ Route::currentRouteName() == 'admin.users.index'  ? 'active-link' : null;}}"><p><a href="{{ route('admin.users.index') }}">Users</a></p></li>
+                        <li class="{{ Route::currentRouteName() == 'admin.user.index'  ? 'active-link' : null;}}"><p><a href="{{ route('admin.user.index') }}">Users</a></p></li>
                         <li><p>Additional</p></li>
                         <li><p>Additional</p></li>
                     </ul>

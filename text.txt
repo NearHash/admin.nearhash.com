@@ -1,0 +1,39 @@
+Schema::create('profiles', function (Blueprint $table) {
+    $table->id();
+    $table->unsignedBigInteger('app_user_id');
+    $table->string('image');
+    $table->boolean('status')->default(false);
+    $table->string('token')->nullable();
+    $table->boolean('is_cdn')->default(false);
+    $table->boolean('is_cover')->default(false);
+    $table->foreign('app_user_id')->references('id')->on('app_users')->onDelete('CASCADE');
+    $table->timestamps();
+});
+
+
+Schema::create('app_users', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('name_id')->unique();
+    $table->string('email')->unique()->nullable();
+    $table->timestamp('email_verified_at')->nullable();
+    $table->string('phone')->unique();
+    $table->string('password');
+    $table->string('country_code');
+    $table->string('date_of_birth')->nullable();
+    $table->string('gender')->nullable();
+    $table->text('address')->nullable();
+    $table->boolean('hide_show')->default(0);
+    $table->boolean('is_deactivate')->default(0);
+    $table->boolean('is_banned')->default(0);
+    $table->boolean('role')->default(0); // 0 is user || agent etc ....
+    $table->string('token')->nullable();
+    $table->rememberToken();
+    $table->timestamps();
+});
+
+
+* delete user if cannot create profile 
+
+* use HasApiTokens in AppUser.php to create token
+        

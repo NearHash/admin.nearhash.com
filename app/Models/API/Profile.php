@@ -13,12 +13,12 @@ class Profile extends Model
 
     protected $appends = ['image_url'];
 
-    public function profile () {
-        return $this->belongsTo(Profile::class);
-    }
-
-    public function getImageUrlAttribute()
-    {
-        return asset("/users/$this->id/$this->image");
-    }
+//    public function profile () {
+//        return $this->belongsTo(Profile::class);
+//    }
+//
+//    public function getImageUrlAttribute()
+//    {
+//        return asset("/users/$this->id/$this->image");
+//    }
 }

@@ -1,8 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AppUserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +23,17 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [DashboardController::class, 'home'])->name('home');
+    Route::get('/', [AdminUserController::class, 'home'])->name('home');
 
-    Route::get('/admin-users', [DashboardController::class, 'adminUsers'])->name('admin-users.index');
-    Route::get('/admin-users/create', [DashboardController::class, 'adminUsersCreate'])->name('admin-users.create');
+    Route::prefix('/admin-user')->name('admin-user.')->group(function () {
+        Route::get('/', [AdminUserController::class, 'index'])->name('index');
+        Route::get('/create', [AdminUserController::class, 'create'])->name('create');
+    });
 
-    Route::get('/users', [DashboardController::class, 'users'])->name('users.index');
+    Route::prefix('/user')->name('user.')->group(function () {
+        Route::get('/', [AppUserController::class, 'index'])->name('index');
+    });
+    
 });
 
 Route::get('login', [AuthController::class, 'login']);

@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 @section('title', 'Admin Users')
 @section('extra_css')
-<link rel="stylesheet" href="{{ asset('css/adminUsers/create.css')}}">
+<link rel="stylesheet" href="{{ asset('css/admin_user/create.css')}}">
 @endsection
 @section('content')
 
@@ -20,8 +20,8 @@
                     <input type="text" name="name" class="form-input form-control content-fm" autocomplete="off">
                 </div>
                 <div class="form-group mb-3">
-                    <label for="" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-input form-control content-fm" autocomplete="off">
+                    <label for="" class="form-label">Name ID</label>
+                    <input type="text" name="name_id" class="form-input form-control content-fm" autocomplete="off">
                 </div>
                 <div class="form-group mb-3">
                     <label for="" class="form-label">Email</label>
@@ -30,6 +30,18 @@
                 <div class="form-group mb-3">
                     <label for="" class="form-label">Phone</label>
                     <input type="number" name="phone" class="form-input form-control content-fm" autocomplete="off">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="" class="form-label">Date of birth</label>
+                    <input type="text" name="date_of_birth" class="form-input form-control content-fm" autocomplete="off">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="" class="form-label">Gender</label>
+                    <input type="text" name="phone" class="form-input form-control content-fm" autocomplete="off">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="" class="form-label">Address</label>
+                    <input type="text" name="address" class="form-input form-control content-fm" autocomplete="off">
                 </div>
                 <div class="form-group mb-3">
                     <label for="" class="form-label">Password</label>

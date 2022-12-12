@@ -1,14 +1,14 @@
 @extends('backend.layouts.app')
 @section('title', 'Admin Users')
 @section('extra_css')
-<link rel="stylesheet" href="{{ asset('css/adminUsers/index.css')}}">
+<link rel="stylesheet" href="{{ asset('css/admin_user/index.css')}}">
 @endsection
 @section('content')
 
 <h3>Admin Users</h3>
 
 <div class=""  style="margin: 34px 0 34px 0;">
-    <a href="{{ route('admin.admin-users.create') }}" class="red-btn content-fm text-light"><i class="fas fa-plus"></i> Create Admin User</a>
+    <a href="{{ route('admin.admin-user.create') }}" class="red-btn content-fm text-light"><i class="fas fa-plus"></i> Create Admin User</a>
 </div>
 
 <div class="card border-0 p-3 mt-3">
