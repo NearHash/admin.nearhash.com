@@ -8,12 +8,38 @@
     --primary: #ED1C24;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Archivo&family=Arvo&family=Bitter&family=Comfortaa&family=Crimson+Text&family=EB+Garamond&family=Fira+Sans&family=Gentium+Book+Basic&family=Libre+Baskerville&family=Merriweather&family=Noto+Serif&family=Open+Sans&family=PT+Serif&family=Roboto&family=Roboto+Slab&display=swap');
+
+fonts {
+    font-family: 'Archivo', sans-serif;  /* cool 5 */
+    font-family: 'Arvo', serif; /* cool 4 */
+    font-family: 'Bitter', serif; /* cool 3 */
+    font-family: 'Comfortaa', cursive;
+    font-family: 'Crimson Text', serif;
+    font-family: 'EB Garamond', serif;
+    font-family: 'Fira Sans', sans-serif;
+    font-family: 'Gentium Book Basic', serif;
+    font-family: 'Libre Baskerville', serif; /* cool */
+    font-family: 'Merriweather', serif; /* cool 2 */
+    font-family: 'Noto Serif', serif;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'PT Serif', serif; /* title */
+    font-family: 'Roboto', sans-serif; /* good */
+    font-family: 'Roboto Slab', serif;
+}
+
 .title-fm {
     font-size: 22px !important;
+    font-family: 'PT Serif', serif;
 }
 
 .content-fm{
     font-size: 18px !important;
+    font-family: 'Bitter', serif;
+}
+
+.std-box-shadow{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .red-btn {

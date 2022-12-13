@@ -61,6 +61,8 @@ font-size: 17px;
     justify-content: center;
     transition: all .3s ease;
     cursor: pointer;
+    border-left: 2px solid var(--primary);
+    border-radius: 8px;
 }
 .dash-card:hover {
     background-color: var(--primary);

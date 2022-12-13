@@ -28,129 +28,131 @@
 
     <div class="sidebar shadow">
 
-        <div class="logo-container mb-3">
+        <div class="logo-container">
             <img class="logo" class="" src="{{ asset('logo.png') }}" alt="">
         </div>
-        <aside class="p-2 pt-0 content-fm">
-            <ul class="text-light m-0 p-0">
-                <li class=""><a href="{{ route('admin.home') }}"><i class="fa fa-home"></i> Dashboard</a></li>
-            </ul>
-            <ul class="m-0 p-0">
-                <li id="admin"  class="dropNav {{ Request::segment(2) == 'admin-user'  ?  'open-drop' : null }}">
-                    <a href="javascript:void(0)" onclick="dropTagAction('admin')">
-                        <i class="fa fa-users"></i>
-                        <span>Admin Management</span>
-                        <i class="fa fa-angle-right aside-icon " id="admin-icon"></i>
-                    </a>
-                    <ul>
-                        <li class="{{ Route::currentRouteName() == 'admin.admin-user.index' || Route::currentRouteName() == 'admin.admin-user.create' ? 'active-link' : null;}}">
-                            <p><a href="{{ route('admin.admin-user.index') }}">Admin Users</a></p>
-                        </li>
-                        <li><p>Additional</p></li>
-                        <li><p>Additional</p></li>
-                    </ul>
-                </li>
-                <li id="user"  class="dropNav {{ Request::segment(2) == 'user'  ?  'open-drop' : null }}">
-                    <a href="javascript:void(0)" onclick="dropTagAction('user')">
-                        <i class="fa fa-users"></i>
-                        <span>User Management</span>
-                        <i class="fa fa-angle-right aside-icon " id="user-icon"></i>
-                    </a>
-                    <ul>
-                        <li class="{{ Route::currentRouteName() == 'admin.user.index'  ? 'active-link' : null;}}"><p><a href="{{ route('admin.user.index') }}">Users</a></p></li>
-                        <li><p>Additional</p></li>
-                        <li><p>Additional</p></li>
-                    </ul>
-                </li>
-                <li id="comp" class="dropNav" >
-                    <a href="javascript:void(0)" onclick="dropTagAction('comp')">
-                        <i class="fa fa-diamond"></i>
-                        <span>Ads Management</span>
-                        <i class="fa fa-angle-right aside-icon " id="comp-icon"></i>
-                    </a>
-                    <ul>
-                        <li><p>Ads</p></li>
-                        <li><p>Panels</p></li>
-                        <li><p>Generals</p></li>
-                        <li><p>Generals</p></li>
-                        <li><p>Generals</p></li>
-                    </ul>
-                </li>
-                <li id="chart"  class="dropNav">
-                    <a href="javascript:void(0)" onclick="dropTagAction('chart')">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <span>Privacy Management</span>
-                        <i class="fa fa-angle-right aside-icon " id="chart-icon"></i>
-                    </a>
-                    <ul>
-                        <li><p>Users Info</p></li>
-                        <li><p>Posts guard</p></li>
-                        <li><p>Bar chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                    </ul>
-                </li>
-                <li id="user"  class="dropNav">
-                    <a href="javascript:void(0)" onclick="dropTagAction('user')">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span>Bussiness</span>
-                        <i class="fa fa-angle-right aside-icon " id="user-icon"></i>
-                    </a>
-                    <ul>
-                        <li><p>Posts</p></li>
-                        <li><p>Limition</p></li>
-                        <li><p>Diagram</p></li>
-                        <li><p>History</p></li>
-                        <li><p>Targets</p></li>
-                    </ul>
-                </li>
-                <li id="task"  class="dropNav">
-                    <a href="javascript:void(0)" onclick="dropTagAction('task')">
-                        <i class="fa fa-tasks"></i>
-                        <span>Tasks</span>
-                        <i class="fa fa-angle-right aside-icon " id="task-icon"></i>
-                    </a>
-                    <ul>
-                        <li><p>Line chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Bar chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                    </ul>
-                </li>
-                <li id="even"  class="dropNav">
-                    <a href="javascript:void(0)" onclick="dropTagAction('even')">
-                        <i class="fa fa-calendar-check"></i>
-                        <span>Events</span>
-                        <i class="fa fa-angle-right aside-icon " id="even-icon"></i>
-                    </a>
-                    <ul>
-                        <li><p>Line chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Bar chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                    </ul>
-                </li>
-                <li id="setting"  class="dropNav">
-                    <a href="javascript:void(0)" onclick="dropTagAction('setting')">
-                        <i class="fa-solid fa-gear"></i>
-                        <span>Setting </span>
-                        <i class="fa fa-angle-right aside-icon " id="setting-icon"></i>
-                    </a>
-                    <ul>
-                        <li><p>Tools</p></li>
-                        <li><p>Features</p></li>
-                        <li><p>Bar chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                        <li><p>Histogram chart</p></li>
-                    </ul>
-                </li>
-            </ul>
-        </aside>
+        <div class="aside-cover h-100">
+            <aside class="p-2 pt-0 content-fm">
+                <ul class="text-light m-0 p-0 pt-2">
+                    <li class="mt-0 "><a href="{{ route('admin.home') }}"><i class="fa fa-home"></i> Dashboard</a></li>
+                </ul>
+                <ul class="m-0 p-0">
+                    <li id="admin"  class="dropNav {{ Request::segment(2) == 'admin-user'  ?  'open-drop' : null }}">
+                        <a href="javascript:void(0)" onclick="dropTagAction('admin')">
+                            <i class="fa fa-users"></i>
+                            <span>Admin Management</span>
+                            <i class="fa fa-angle-right aside-icon " id="admin-icon"></i>
+                        </a>
+                        <ul>
+                            <li class="{{ Route::currentRouteName() == 'admin.admin-user.index' || Route::currentRouteName() == 'admin.admin-user.create' ? 'active-link' : null;}}">
+                                <p><a href="{{ route('admin.admin-user.index') }}">Admin Users</a></p>
+                            </li>
+                            <li><p>Additional</p></li>
+                            <li><p>Additional</p></li>
+                        </ul>
+                    </li>
+                    <li id="user"  class="dropNav {{ Request::segment(2) == 'user'  ?  'open-drop' : null }}">
+                        <a href="javascript:void(0)" onclick="dropTagAction('user')">
+                            <i class="fa fa-users"></i>
+                            <span>User Management</span>
+                            <i class="fa fa-angle-right aside-icon " id="user-icon"></i>
+                        </a>
+                        <ul>
+                            <li class="{{ Route::currentRouteName() == 'admin.user.index' || Route::currentRouteName() == 'admin.user.detail'  ? 'active-link' : null;}}"><p><a href="{{ route('admin.user.index') }}">Users</a></p></li>
+                            <li><p>Additional</p></li>
+                            <li><p>Additional</p></li>
+                        </ul>
+                    </li>
+                    <li id="comp" class="dropNav" >
+                        <a href="javascript:void(0)" onclick="dropTagAction('comp')">
+                            <i class="fa fa-diamond"></i>
+                            <span>Ads Management</span>
+                            <i class="fa fa-angle-right aside-icon " id="comp-icon"></i>
+                        </a>
+                        <ul>
+                            <li><p>Ads</p></li>
+                            <li><p>Panels</p></li>
+                            <li><p>Generals</p></li>
+                            <li><p>Generals</p></li>
+                            <li><p>Generals</p></li>
+                        </ul>
+                    </li>
+                    <li id="chart"  class="dropNav">
+                        <a href="javascript:void(0)" onclick="dropTagAction('chart')">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Privacy Management</span>
+                            <i class="fa fa-angle-right aside-icon " id="chart-icon"></i>
+                        </a>
+                        <ul>
+                            <li><p>Users Info</p></li>
+                            <li><p>Posts guard</p></li>
+                            <li><p>Bar chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                        </ul>
+                    </li>
+                    <li id="user"  class="dropNav">
+                        <a href="javascript:void(0)" onclick="dropTagAction('user')">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Bussiness</span>
+                            <i class="fa fa-angle-right aside-icon " id="user-icon"></i>
+                        </a>
+                        <ul>
+                            <li><p>Posts</p></li>
+                            <li><p>Limition</p></li>
+                            <li><p>Diagram</p></li>
+                            <li><p>History</p></li>
+                            <li><p>Targets</p></li>
+                        </ul>
+                    </li>
+                    <li id="task"  class="dropNav">
+                        <a href="javascript:void(0)" onclick="dropTagAction('task')">
+                            <i class="fa fa-tasks"></i>
+                            <span>Tasks</span>
+                            <i class="fa fa-angle-right aside-icon " id="task-icon"></i>
+                        </a>
+                        <ul>
+                            <li><p>Line chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Bar chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                        </ul>
+                    </li>
+                    <li id="even"  class="dropNav">
+                        <a href="javascript:void(0)" onclick="dropTagAction('even')">
+                            <i class="fa fa-calendar-check"></i>
+                            <span>Events</span>
+                            <i class="fa fa-angle-right aside-icon " id="even-icon"></i>
+                        </a>
+                        <ul>
+                            <li><p>Line chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Bar chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                        </ul>
+                    </li>
+                    <li id="setting"  class="dropNav">
+                        <a href="javascript:void(0)" onclick="dropTagAction('setting')">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Setting </span>
+                            <i class="fa fa-angle-right aside-icon " id="setting-icon"></i>
+                        </a>
+                        <ul>
+                            <li><p>Tools</p></li>
+                            <li><p>Features</p></li>
+                            <li><p>Bar chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                            <li><p>Histogram chart</p></li>
+                        </ul>
+                    </li>
+                </ul>
+            </aside>
+        </div>
 
     </div>
 
@@ -193,6 +195,10 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    {{-- Sweet Alert 2  --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="{{ asset('js/layout.js') }}"></script>
 
     <script>
@@ -204,6 +210,30 @@
                 })
             }
         )
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+            })
+
+            @if (session('delete'))
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('delete') }}"
+                })
+            @endif
+            @if (session('error'))
+                Toast.fire({
+                    icon: 'success',
+                    title: "{{ session('error') }}"
+                })
+            @endif
     </script>
 
     @yield('script')

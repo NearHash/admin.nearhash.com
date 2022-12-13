@@ -32,12 +32,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::prefix('/user')->name('user.')->group(function () {
         Route::get('/', [AppUserController::class, 'index'])->name('index');
+        Route::delete('/{id}/delete', [AppUserController::class, 'delete'])->name('delete');
+        Route::get('/{id}/detail', [AppUserController::class, 'detail'])->name('detail');
+        Route::get('/{userID}/post/{postID}', [AppUserController::class, 'post'])->name('post');
     });
     
 });
 
 Route::get('login', [AuthController::class, 'login']);
 
-Auth::routes();
+Auth::routes(
+    ['register' => false]
+);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
