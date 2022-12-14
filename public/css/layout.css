@@ -7,6 +7,9 @@
 body {
     background-color: rgb(244,246,249);
 }
+body::-webkit-scrollbar {
+    display: none;
+}
 
 
 .menu{
@@ -19,15 +22,18 @@ body {
 .sidebar::-webkit-scrollbar {
     display: none;
 }
+.aside-cover::-webkit-scrollbar {
+    display: none;
+}
 
 /* Hide scrollbar for IE, Edge and Firefox */
-.sidebar {
+.sidebar, .aside-cover {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
 
 .sidebar{
-    height: 100vh;
+    height: 100vh !important;
     position: fixed;
     top: 0;
     right: 0;
@@ -35,7 +41,7 @@ body {
     bottom: 0;
     width: 300px;
     z-index: 1000;
-    overflow-y: scroll;
+    overflow-y: scroll !important;
     transition: all .3s;
     /* background-color: var(--primary); */
 }
@@ -55,7 +61,7 @@ footer {
 }
 
 .sidebar-change-1 {
-    left: -350px;
+    left: -350px !important;
 }
 
 .main-change-1 {
@@ -94,6 +100,7 @@ footer {
     left: 0;
     background-color: white;
     z-index: 10000;
+    transition: all .3s;
 }
 .logo {
     /* width: 100%; */
@@ -101,6 +108,7 @@ footer {
 }
 
 .aside-cover{
+    overflow-y: scroll;
     background-color: var(--primary);
     padding: 0;
     margin-top: 80px;
@@ -111,7 +119,7 @@ aside ul {
 }
 aside > ul > li {
     border-radius: 8px;
-} 
+}
 aside ul li {
     list-style: none;
     margin: 20px auto;
@@ -123,8 +131,8 @@ aside ul li {
     padding-right: 8px;
     transition: all .3s ease;
     text-transform: capitalize;
-    
-    
+
+
 }
 /* aside ul:first-child li{
     max-height: 50px;
@@ -180,7 +188,7 @@ aside ul li > ul li {
 
 /* ------------ */
 
-aside ul li > ul li a, 
+aside ul li > ul li a,
 aside ul li:target>ul li a{
     background: transparent;
 }
@@ -194,7 +202,7 @@ aside ul li:target>ul li a{
 
 .open-drop {
     max-height: 500px;
-    border-radius: 5px 0px 0px 5px; 
+    border-radius: 5px 0px 0px 5px;
 }
 
 /* aside ul li:target a {
@@ -210,7 +218,7 @@ aside ul li:target>ul li a{
 }
 
 
-/* 
+/*
 aside ul li:target a i.fa-angle-right {
     transform: rotate(90deg);
     top: 10px;
@@ -243,8 +251,15 @@ aside ul li:target:hover {
 
 @media screen and (max-width: 992px) {
     .sidebar{
-        position: absolute !important;
+        min-height: 100vh;
         top: 0;
+        bottom: 0;
+        left: -350px;
+    }
+    .aside-cover{
+
+    }
+    .logo-container{
         left: -350px;
     }
     .main {

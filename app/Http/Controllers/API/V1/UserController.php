@@ -53,7 +53,7 @@ class UserController extends Controller
             $this->error(null, 'Your user id is invalid.', 400);
         }
         foreach ($user->images as $image) {
-            unlink("users/".$image->image);
+            unlink("uploads/users/".$image->image);
 //            Storage::disk('public')->delete('users/' . $image->image);
         }
         $user->images()->delete();

@@ -61,79 +61,85 @@ class AuthController extends Controller
             return $this->error(null, $validator->errors()->first(), 422);
         }
 
-        $user = new AppUser();
-        $user->name = $request->name;
-        $user->name_id = $this->chrGenerator();
-        $user->country_code = $request->country_code;
-        $user->phone = $request->phone;
-        $user->email = $request->email;
-        $user->gender = $request->gender;
-        $user->token = str_shuffle(md5(date("ymdhis")));
-        $user->date_of_birth = $request->date_of_birth;
-        $user->password = Hash::make($request->password);
-        $otp = Otp::where('phone', $request->phone)->where('is_verify', true)->orderBy('id', 'desc')->first();
-        if (!$otp)
-        {
-            return $this->error(null, 'OTP verify failed.',500);
-        }
-        if($user->save())
-        {
-            if($request->image)
+        try {
+            $user = new AppUser();
+            $user->name = $request->name;
+            $user->name_id = $this->chrGenerator();
+            $user->country_code = $request->country_code;
+            $user->phone = $request->phone;
+            $user->email = $request->email;
+            $user->gender = $request->gender;
+            $user->token = str_shuffle(md5(date("ymdhis")));
+            $user->date_of_birth = $request->date_of_birth;
+            $user->password = Hash::make($request->password);
+            $otp = Otp::where('phone', $request->phone)->where('is_verify', true)->orderBy('id', 'desc')->first();
+            if (!$otp)
             {
-                $photo = $this->uploadNow($request->image, "uploads/users/$user->id");
-                $profile = new Profile();
-                $profile->image = $photo;
-                $profile->token = str_shuffle(md5(date("ymdhis")));
-                $profile->app_user_id = $user->id;
-                if ($profile->save())
+                return $this->error(null, 'OTP verify failed.',500);
+            }
+            if($user->save())
+            {
+                if($request->image)
                 {
-                    if ($user->save())
+                    $photo = $this->uploadNow($request->image, "uploads/users/$user->id");
+                    $profile = new Profile();
+                    $profile->image = $photo;
+                    $profile->token = str_shuffle(md5(date("ymdhis")));
+                    $profile->app_user_id = $user->id;
+                    if ($profile->save())
                     {
                         $token = $user->createToken('AccessToken');
                         return $this->success([
                             'user' => new UserResource($user),
                             "access_token" => $token->plainTextToken,
                         ], 'Your account successfully registered.');
+                    }else{
+                        unlink("uploads/users/$user->id/".$profile->image);
+                        $user->delete();
+                        return $this->error(null, 'User profile upload error',500);
                     }
-                }else{
-                    // $user->delete();
-                    return $this->error(null, 'User profile upload error',500);
                 }
+            }else{
+                return $this->error(null, 'Saving user in internal server error occurred.',500);
             }
-        }else{
-            return $this->error(null, 'Saving user in internal server error occurred.',500);
+        }catch (ClientException $e) {
+            return $this->error(null, 'Internal server error occurred',500);
         }
 
     }
 
     public function login(Request $request)
     {
-        $username = $request->username;
-        $password = $request->password;
-        $user = AppUser::where('phone', $username)->orWhere('email', $username)->orWhere('name_id', $username)->first(); // azp
-        if (!$user) {
-            return $this->error(null, 'Sorry, we couldn\'t find an account.', 400);
-        }
-        $hashed = $user->password;
-        $match = Hash::check($password, $hashed);
-        if (!$match) {
-            return $this->error(
-                null, 'The phone number or password you entered is incorrect.', 400,
-            );
-        }
+        try {
+            $username = $request->username;
+            $password = $request->password;
+            $user = AppUser::where('phone', $username)->orWhere('email', $username)->orWhere('name_id', $username)->first(); // azp
+            if (!$user) {
+                return $this->error(null, 'Sorry, we couldn\'t find an account.', 400);
+            }
+            $hashed = $user->password;
+            $match = Hash::check($password, $hashed);
+            if (!$match) {
+                return $this->error(
+                    null, 'The phone number or password you entered is incorrect.', 400,
+                );
+            }
 
-        $res = new UserResource($user);
-        $token = $user->createToken("authToken")->plainTextToken;
-        if (isset($request->validator) && $request->validator->fails()) {
-            $validator = $request->validator;
-            $message = $validator->errors();
-            return $this->error(null, $message, 422);
-        } else {
-            return $this->success([
-                'user' => $res,
-                'access_token' => $token,
-            ], "You have successfully logged in.", 200);
+            $res = new UserResource($user);
+            $token = $user->createToken("authToken")->plainTextToken;
+            if (isset($request->validator) && $request->validator->fails()) {
+                $validator = $request->validator;
+                $message = $validator->errors();
+                return $this->error(null, $message, 422);
+            } else {
+                return $this->success([
+                    'user' => $res,
+                    'access_token' => $token,
+                ], "You have successfully logged in.", 200);
 
+            }
+        }catch (ClientException $e) {
+            return $this->error(null, 'Internal server error occurred',500);
         }
     }
 

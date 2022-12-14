@@ -169,16 +169,28 @@
                         account_circle
                     </span>
                 </a>
-                <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
-                    <li class="d-flex flex-column justify-content-center align-items-center p-2">
-                        <div>Aung Zaw Phyo</div>
-                        <div class="my-2">User Analyst</div>
-
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li class="list-item">
+                        <span class="material-symbols-rounded me-2">admin_panel_settings</span> <span>Aung Zaw Phyo</span>
+                    </li >
+                    <li class="list-item">
+                        <span class="material-symbols-rounded me-2">task_alt</span> <span>User Analyst</span>
+                    </li>
+                    <li class="list-item">
                         <form action="{{ route('logout') }}" method="POST" >
                             @csrf
-                            <button type="submit" class="btn btn-link text-decoration-none d-flex justify-content-center align-items-center"><i class="fa fa-fw fa-power-off"></i> Logout</button>
+                            <a type="submit" class=""><i class="fa fa-fw fa-power-off me-2"></i> Logout</a>
                         </form>
                     </li>
+{{--                    <li class="">--}}
+{{--                        <div class=" d-flex justify-content-center align-items-center"><span class="material-symbols-rounded me-2">admin_panel_settings</span> <span>Aung Zaw Phyo</span></div>--}}
+{{--                        <div class="d-flex justify-content-center align-items-center"><span class="material-symbols-rounded me-2">task_alt</span> <span>User Analyst</span></div>--}}
+
+{{--                        <form action="{{ route('logout') }}" method="POST" >--}}
+{{--                            @csrf--}}
+{{--                            <button type="submit" class="btn btn-link text-decoration-none d-flex justify-content-center align-items-center"><i class="fa fa-fw fa-power-off me-2"></i> Logout</button>--}}
+{{--                        </form>--}}
+{{--                    </li>--}}
                 </ul>
             </div>
         </nav>
