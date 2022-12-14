@@ -149,9 +149,7 @@ class AuthController extends Controller
             return $this->error('Something went wronged.', null, 400);
         }
         $request->user()->tokens()->delete();
-        return $this->success([
-            'You have successfully logged out.', true, 200
-        ]);
+        return $this->success(null,'You have successfully logged out.',  200);
     }
 
     public function sendSMS($phone, $otp, $message = 'is Your NearHash OTP number.')
