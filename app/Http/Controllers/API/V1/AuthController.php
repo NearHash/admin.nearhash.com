@@ -103,7 +103,7 @@ class AuthController extends Controller
                 return $this->error(null, 'Saving user in internal server error occurred.',500);
             }
         }catch (ClientException $e) {
-            return $this->error(null, 'Internal server error occurred',500);
+            return $this->error(null, $e->getMessage(),500);
         }
 
     }

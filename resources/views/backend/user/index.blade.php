@@ -5,9 +5,10 @@
 @endsection
 @section('content')
 
-<h3>Users</h3>
 
-<div class="card border-0 p-3 mt-3">
+    <h3 class=" ms-4">Users Information</h3>
+
+<div class=" border-0 p-3 mt-3">
     <div class="row g-2 p-2">
 
         @foreach($users as $user)
@@ -25,7 +26,7 @@
                             <div class="content-fm phone">
                                 <span class="material-symbols-rounded icon me-3">account_circle</span>
                                 <div class="title-fm">{{$user->name}}</div>
-                            </div>                        
+                            </div>
                             <div class="content-fm mt-1 phone">
                                 <span class="material-symbols-rounded icon me-3">phone_iphone</span>
                                 <span class="text">{{$user->phone}}</span>

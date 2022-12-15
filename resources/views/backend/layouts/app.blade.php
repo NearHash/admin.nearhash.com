@@ -169,28 +169,22 @@
                         account_circle
                     </span>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li class="list-item">
-                        <span class="material-symbols-rounded me-2">admin_panel_settings</span> <span>Aung Zaw Phyo</span>
+                <ul class="dropdown-menu std-box-shadow content-fm" aria-labelledby="dropdownMenuButton1">
+                    <li class="list-item d-flex align-items-center">
+                        <span class="material-symbols-rounded me-3">admin_panel_settings</span> <span>Aung Zaw Phyo</span>
                     </li >
-                    <li class="list-item">
-                        <span class="material-symbols-rounded me-2">task_alt</span> <span>User Analyst</span>
+                    <li class="list-item d-flex align-items-center">
+                        <span class="material-symbols-rounded me-3">task_alt</span> <span>User Analyst</span>
                     </li>
-                    <li class="list-item">
-                        <form action="{{ route('logout') }}" method="POST" >
-                            @csrf
-                            <a type="submit" class=""><i class="fa fa-fw fa-power-off me-2"></i> Logout</a>
-                        </form>
+                    <li class="list-item d-flex align-items-center">
+                        <span class="material-symbols-rounded me-3">settings_suggest</span> <span>Profile Setting</span>
                     </li>
-{{--                    <li class="">--}}
-{{--                        <div class=" d-flex justify-content-center align-items-center"><span class="material-symbols-rounded me-2">admin_panel_settings</span> <span>Aung Zaw Phyo</span></div>--}}
-{{--                        <div class="d-flex justify-content-center align-items-center"><span class="material-symbols-rounded me-2">task_alt</span> <span>User Analyst</span></div>--}}
-
-{{--                        <form action="{{ route('logout') }}" method="POST" >--}}
-{{--                            @csrf--}}
-{{--                            <button type="submit" class="btn btn-link text-decoration-none d-flex justify-content-center align-items-center"><i class="fa fa-fw fa-power-off me-2"></i> Logout</button>--}}
-{{--                        </form>--}}
-{{--                    </li>--}}
+                    <li class="list-item d-flex align-items-center" id="logout">
+                        <span class="material-symbols-rounded me-3">logout</span> <span>Logout</span>
+                    </li>
+                    <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                        @csrf
+                    </form>
                 </ul>
             </div>
         </nav>
@@ -219,6 +213,10 @@
                 $('.back-btn').on('click', function () {
                     window.history.go(-1)
                     return false
+                })
+
+                $('#logout').on('click', function () {
+                    $('#logout-form').submit()
                 })
             }
         )

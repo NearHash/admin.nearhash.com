@@ -241,7 +241,24 @@ aside ul li:target:hover {
 
 
 
-
+.dropdown-menu{
+    border: none;
+    margin: 0;
+    padding: 0;
+    min-width: 220px;
+}
+.dropdown-menu > li{
+    padding: 10px;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+/*.dropdown-menu > li > :first-child{*/
+/*    color: var(--primary);*/
+/*}*/
+.dropdown-menu > li:hover {
+    background-color: var(--primary);
+    color: white;
+}
 
 
 
